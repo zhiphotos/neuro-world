@@ -3,28 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мир Нейросетей</title>
+    <title>Русалочий Мир</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
+            margin: 0;
+            overflow: hidden;
             background: linear-gradient(to bottom, #1e3c72, #2a5298);
-            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
         }
-        h1 {
-            font-size: 24px;
+
+        .game-container {
+            position: relative;
+            width: 100vw;
+            height: 200vh; /* Длинный мир для скроллинга */
+            background: url('https://example.com/your-background-image.jpg') no-repeat center;
+            background-size: cover;
         }
+
+        .mermaid {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: url('https://example.com/mermaid.png') no-repeat center;
+            background-size: contain;
+            left: 50%;
+            bottom: 10%;
+            transform: translateX(-50%);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .lesson {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: url('https://example.com/icon-lesson.png') no-repeat center;
+            background-size: contain;
+            cursor: pointer;
+        }
+
+        .lesson-1 { top: 20%; left: 30%; }
+        .lesson-2 { top: 40%; left: 60%; }
+        .lesson-3 { top: 60%; left: 20%; }
+        .lesson-4 { top: 80%; left: 70%; }
     </style>
 </head>
 <body>
-    <h1>Привет, <span id="username">гость</span>!</h1>
+    <div class="game-container" id="gameContainer">
+        <div class="mermaid" id="mermaid"></div>
+        <div class="lesson lesson-1" onclick="openLesson(1)"></div>
+        <div class="lesson lesson-2" onclick="openLesson(2)"></div>
+        <div class="lesson lesson-3" onclick="openLesson(3)"></div>
+        <div class="lesson lesson-4" onclick="openLesson(4)"></div>
+    </div>
 
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();  // Разворачивает приложение на весь экран
-        document.getElementById("username").innerText = tg.initDataUnsafe.user?.first_name || "гость";
+        let gameContainer = document.getElementById('gameContainer');
+        let mermaid = document.getElementById('mermaid');
+
+        // Перемещение персонажа
+        function moveMermaid(x, y) {
+            mermaid.style.left = `${x}px`;
+            mermaid.style.top = `${y}px`;
+        }
+
+        // Открытие уроков
+        function openLesson(lessonNumber) {
+            alert(`Открываем урок ${lessonNumber}`);
+            // Здесь можно добавить логику проверки доступности урока
+        }
+
+        // Скролл карты
+        window.addEventListener('wheel', (e) => {
+            gameContainer.scrollBy(0, e.deltaY * 0.5);
+        });
     </script>
 </body>
 </html>
