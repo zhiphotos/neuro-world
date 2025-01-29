@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мир Нейросетей</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            color: white;
+        }
+        h1 {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Привет, <span id="username">гость</span>!</h1>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();  // Разворачивает приложение на весь экран
+        document.getElementById("username").innerText = tg.initDataUnsafe.user?.first_name || "гость";
+    </script>
+</body>
+</html>
