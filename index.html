@@ -10,17 +10,17 @@
             margin: 0;
             overflow: hidden;
             font-family: Arial, sans-serif;
-            background: #001f3f; /* Фон на случай, если картинка не загрузится */
+            background: #001f3f;
+            touch-action: none; /* Отключаем стандартное поведение свайпа */
         }
 
         /* Контейнер карты */
         .game-container {
-            position: relative;
-            width: 100vw;
-            height: 300vh;
+            position: absolute;
+            width: 200vw; /* Делаем карту шире экрана */
+            height: 300vh; /* Делаем карту выше экрана */
             background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/bacground.png') no-repeat center top;
             background-size: cover;
-            overflow-y: auto;
         }
 
         /* Русалка-персонаж */
@@ -31,9 +31,9 @@
             background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/pers.png') no-repeat center;
             background-size: contain;
             left: 50%;
-            top: 85%;
-            transform: translateX(-50%);
-            transition: all 0.3s ease-in-out;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.2s ease-in-out;
         }
 
         /* Уроки */
@@ -55,19 +55,6 @@
         .lesson-4 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/story-4.png'); top: 55%; left: 70%; }
         .lesson-5 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/reels-5.png'); top: 70%; left: 20%; }
         .lesson-6 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/pravila-6.png'); top: 85%; left: 50%; }
-
-        /* Текст на уроках */
-        .lesson-text {
-            position: absolute;
-            width: 100%;
-            bottom: -20px;
-            text-align: center;
-            font-size: 14px;
-            color: white;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 5px;
-            border-radius: 5px;
-        }
 
         /* Заголовок */
         .title {
@@ -116,7 +103,45 @@
         let gameContainer = document.getElementById('gameContainer');
         let mermaid = document.getElementById('mermaid');
 
-        // Функция движения персонажа
+        let offsetX = 0, offsetY = 0;
+        let isDragging = false;
+
+        // Перемещение карты (скроллинг)
+        gameContainer.addEventListener("wheel", (e) => {
+            gameContainer.scrollBy({
+                top: e.deltaY * 0.5,
+                left: e.deltaX * 0.5,
+                behavior: "smooth",
+            });
+        });
+
+        // Перемещение карты на мобильных (тач-события)
+        gameContainer.addEventListener("touchstart", (e) => {
+            isDragging = true;
+            offsetX = e.touches[0].clientX;
+            offsetY = e.touches[0].clientY;
+        });
+
+        gameContainer.addEventListener("touchmove", (e) => {
+            if (!isDragging) return;
+            let deltaX = offsetX - e.touches[0].clientX;
+            let deltaY = offsetY - e.touches[0].clientY;
+            gameContainer.scrollBy(deltaX, deltaY);
+            offsetX = e.touches[0].clientX;
+            offsetY = e.touches[0].clientY;
+        });
+
+        gameContainer.addEventListener("touchend", () => {
+            isDragging = false;
+        });
+
+        // Движение русалки (по нажатию)
+        gameContainer.addEventListener("click", (e) => {
+            let x = e.clientX - gameContainer.getBoundingClientRect().left - 60;
+            let y = e.clientY - gameContainer.getBoundingClientRect().top - 60;
+            moveMermaid(x, y);
+        });
+
         function moveMermaid(x, y) {
             mermaid.style.left = `${x}px`;
             mermaid.style.top = `${y}px`;
@@ -131,14 +156,6 @@
                 alert('❌ Сначала пройдите предыдущий урок!');
             }
         }
-
-        // Плавный скроллинг карты
-        gameContainer.addEventListener("wheel", (e) => {
-            gameContainer.scrollBy({
-                top: e.deltaY * 0.5,
-                behavior: "smooth",
-            });
-        });
     </script>
 </body>
 </html>
