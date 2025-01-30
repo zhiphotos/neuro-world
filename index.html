@@ -13,21 +13,19 @@
             background: #001f3f;
         }
 
-        /* Контейнер карты */
         .game-container {
             position: relative;
             width: 100vw;
             height: 300vh;
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/bacground.png') no-repeat center top;
-            background-size: contain;
+            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/background.png') no-repeat center top;
+            background-size: cover;
             overflow-y: auto;
         }
 
-        /* Русалка-персонаж */
         .mermaid {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/pers.png') no-repeat center;
             background-size: contain;
             left: 50%;
@@ -36,14 +34,16 @@
             transition: all 0.3s ease-in-out;
         }
 
-        /* Уроки */
         .lesson {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             cursor: pointer;
             background-size: contain;
             background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .lesson-1 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/zvuk_1.png'); top: 10%; left: 20%; }
@@ -51,7 +51,6 @@
         .lesson-3 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/story-4.png'); top: 50%; left: 30%; }
         .lesson-4 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/reels-5.png'); top: 70%; left: 70%; }
 
-        /* Текст на уроках */
         .lesson-text {
             position: absolute;
             width: 100%;
@@ -64,7 +63,6 @@
             border-radius: 5px;
         }
 
-        /* Заголовок */
         .title {
             position: fixed;
             top: 10px;
@@ -83,10 +81,8 @@
     <div class="title">🌊 Русалочий Мир — исследуй и учись! 🧜‍♀️</div>
 
     <div class="game-container" id="gameContainer">
-        <!-- Персонаж -->
         <div class="mermaid" id="mermaid"></div>
 
-        <!-- Уроки -->
         <div class="lesson lesson-1" onclick="openLesson(1)">
             <div class="lesson-text">🎵 Звуковой урок</div>
         </div>
@@ -105,13 +101,6 @@
         let gameContainer = document.getElementById('gameContainer');
         let mermaid = document.getElementById('mermaid');
 
-        // Функция движения персонажа
-        function moveMermaid(x, y) {
-            mermaid.style.left = `${x}px`;
-            mermaid.style.top = `${y}px`;
-        }
-
-        // Открытие уроков
         function openLesson(lessonNumber) {
             if (lessonNumber === 1 || localStorage.getItem(`lesson${lessonNumber - 1}`)) {
                 alert(`📖 Открываем урок ${lessonNumber}`);
@@ -121,7 +110,6 @@
             }
         }
 
-        // Плавный скроллинг карты
         gameContainer.addEventListener("wheel", (e) => {
             gameContainer.scrollBy({
                 top: e.deltaY * 0.5,
