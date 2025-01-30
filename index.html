@@ -10,39 +10,26 @@
             margin: 0;
             overflow: hidden;
             background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             font-family: Arial, sans-serif;
         }
 
         .game-container {
             position: relative;
             width: 100vw;
-            height: 300vh;
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/IMG_2164.jpeg') no-repeat center;
+            height: 200vh;
+            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/background.png') no-repeat center;
             background-size: cover;
-        }
-
-        .character-selection {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .character-selection img {
-            width: 80px;
-            margin: 10px;
-            cursor: pointer;
         }
 
         .mermaid {
             position: absolute;
-            width: 120px;
-            height: 120px;
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/IMG_2179.png') no-repeat center;
+            width: 100px;
+            height: 100px;
+            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/pers.png') no-repeat center;
             background-size: contain;
             left: 50%;
             bottom: 10%;
@@ -52,27 +39,21 @@
 
         .lesson {
             position: absolute;
-            width: 80px;
-            height: 80px;
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/IMG_2180.png') no-repeat center;
+            width: 100px;
+            height: 100px;
             background-size: contain;
             cursor: pointer;
         }
 
-        .lesson-1 { top: 20%; left: 30%; }
-        .lesson-2 { top: 40%; left: 60%; }
-        .lesson-3 { top: 60%; left: 20%; }
-        .lesson-4 { top: 80%; left: 70%; }
+        .lesson-1 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/zvuk_1.png') no-repeat center; top: 20%; left: 30%; }
+        .lesson-2 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/video-2.png') no-repeat center; top: 40%; left: 60%; }
+        .lesson-3 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/story-4.png') no-repeat center; top: 60%; left: 20%; }
+        .lesson-4 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/reels-5.png') no-repeat center; top: 80%; left: 70%; }
+
     </style>
 </head>
 <body>
     <div class="game-container" id="gameContainer">
-        <div class="character-selection" id="characterSelection">
-            <p>Выберите персонажа:</p>
-            <img src="https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/character1.png" onclick="selectCharacter('character1')">
-            <img src="https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/character2.png" onclick="selectCharacter('character2')">
-            <img src="https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/character3.png" onclick="selectCharacter('character3')">
-        </div>
         <div class="mermaid" id="mermaid"></div>
         <div class="lesson lesson-1" onclick="openLesson(1)"></div>
         <div class="lesson lesson-2" onclick="openLesson(2)"></div>
@@ -83,20 +64,14 @@
     <script>
         let gameContainer = document.getElementById('gameContainer');
         let mermaid = document.getElementById('mermaid');
-        let characterSelection = document.getElementById('characterSelection');
 
-        function selectCharacter(character) {
-            localStorage.setItem('selectedCharacter', character);
-            characterSelection.style.display = 'none';
+        function moveMermaid(x, y) {
+            mermaid.style.left = `${x}px`;
+            mermaid.style.top = `${y}px`;
         }
 
         function openLesson(lessonNumber) {
-            if (lessonNumber === 1 || localStorage.getItem(`lesson${lessonNumber - 1}`)) {
-                alert(`Открываем урок ${lessonNumber}`);
-                localStorage.setItem(`lesson${lessonNumber}`, true);
-            } else {
-                alert('Сначала пройдите предыдущий урок!');
-            }
+            alert(`Открываем урок ${lessonNumber}`);
         }
 
         window.addEventListener('wheel', (e) => {
