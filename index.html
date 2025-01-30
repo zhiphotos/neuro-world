@@ -11,50 +11,58 @@
             overflow: hidden;
             font-family: Arial, sans-serif;
             background: #001f3f;
-            touch-action: none; /* Отключаем стандартное поведение свайпа */
         }
 
-        /* Контейнер карты */
         .game-container {
-            position: absolute;
-            width: 250vw; /* Увеличили размер карты */
-            height: 400vh; /* Больше вертикальный размер */
+            position: relative;
+            width: 100vw;
+            height: 300vh;
             background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/bacground.png') no-repeat center top;
-            background-size: contain; /* Улучшили качество */
-            background-position: center;
+            background-size: cover;
+            overflow-y: scroll;
         }
 
-        /* Русалка-персонаж */
         .mermaid {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/pers.png') no-repeat center;
             background-size: contain;
             left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            transition: left 0.3s ease, top 0.3s ease; /* Плавное движение */
+            top: 80%;
+            transform: translateX(-50%);
+            transition: all 0.3s ease-in-out;
         }
 
-        /* Уроки */
         .lesson {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             cursor: pointer;
             background-size: contain;
             background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .lesson-1 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/zvuk_1.png'); top: 10%; left: 20%; }
-        .lesson-2 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/video-2.png'); top: 25%; left: 50%; }
-        .lesson-3 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/effects-3.png'); top: 40%; left: 30%; }
-        .lesson-4 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/story-4.png'); top: 55%; left: 70%; }
-        .lesson-5 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/reels-5.png'); top: 70%; left: 20%; }
-        .lesson-6 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/pravila-6.png'); top: 85%; left: 50%; }
+        .lesson-2 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/video-2.png'); top: 30%; left: 50%; }
+        .lesson-3 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/effects-3.png'); top: 50%; left: 30%; }
+        .lesson-4 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/story-4.png'); top: 70%; left: 70%; }
 
-        /* Заголовок */
+        .lesson-text {
+            position: absolute;
+            width: 100%;
+            bottom: -20px;
+            text-align: center;
+            font-size: 14px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            border-radius: 5px;
+        }
+
         .title {
             position: fixed;
             top: 10px;
@@ -73,10 +81,8 @@
     <div class="title">🌊 Русалочий Мир — исследуй и учись! 🧜‍♀️</div>
 
     <div class="game-container" id="gameContainer">
-        <!-- Персонаж -->
         <div class="mermaid" id="mermaid"></div>
 
-        <!-- Уроки -->
         <div class="lesson lesson-1" onclick="openLesson(1)">
             <div class="lesson-text">🎵 Звуковой урок</div>
         </div>
@@ -84,16 +90,10 @@
             <div class="lesson-text">📺 Видео-урок</div>
         </div>
         <div class="lesson lesson-3" onclick="openLesson(3)">
-            <div class="lesson-text">✨ Эффекты ИИ</div>
+            <div class="lesson-text">📚 История</div>
         </div>
         <div class="lesson lesson-4" onclick="openLesson(4)">
-            <div class="lesson-text">📖 Истории</div>
-        </div>
-        <div class="lesson lesson-5" onclick="openLesson(5)">
-            <div class="lesson-text">🎬 Альтернативные рилсы</div>
-        </div>
-        <div class="lesson lesson-6" onclick="openLesson(6)">
-            <div class="lesson-text">📜 Правила блога 2025</div>
+            <div class="lesson-text">🎮 Ролики</div>
         </div>
     </div>
 
@@ -101,73 +101,26 @@
         let gameContainer = document.getElementById('gameContainer');
         let mermaid = document.getElementById('mermaid');
 
-        let offsetX = 0, offsetY = 0;
-        let isDragging = false;
-
-        // Скроллинг карты (принудительный)
-        function scrollTo(x, y) {
-            gameContainer.scrollTo({
-                left: x,
-                top: y,
-                behavior: "smooth"
-            });
-        }
-
-        // Скроллинг колесиком
-        gameContainer.addEventListener("wheel", (e) => {
-            gameContainer.scrollBy({
-                top: e.deltaY * 0.5,
-                left: e.deltaX * 0.5,
-                behavior: "smooth",
-            });
-        });
-
-        // Скроллинг на телефоне (свайп)
-        gameContainer.addEventListener("touchstart", (e) => {
-            isDragging = true;
-            offsetX = e.touches[0].clientX;
-            offsetY = e.touches[0].clientY;
-        });
-
-        gameContainer.addEventListener("touchmove", (e) => {
-            if (!isDragging) return;
-            let deltaX = offsetX - e.touches[0].clientX;
-            let deltaY = offsetY - e.touches[0].clientY;
-            gameContainer.scrollBy(deltaX, deltaY);
-            offsetX = e.touches[0].clientX;
-            offsetY = e.touches[0].clientY;
-        });
-
-        gameContainer.addEventListener("touchend", () => {
-            isDragging = false;
-        });
-
-        // Движение персонажа + скроллинг карты
-        gameContainer.addEventListener("click", (e) => {
-            let x = e.clientX - gameContainer.getBoundingClientRect().left - 60;
-            let y = e.clientY - gameContainer.getBoundingClientRect().top - 60;
-
-            // Двигаем персонажа
-            moveMermaid(x, y);
-
-            // Скроллим карту за ним
-            scrollTo(x - window.innerWidth / 2, y - window.innerHeight / 2);
-        });
-
         function moveMermaid(x, y) {
             mermaid.style.left = `${x}px`;
             mermaid.style.top = `${y}px`;
         }
 
-        // Открытие уроков
         function openLesson(lessonNumber) {
             if (lessonNumber === 1 || localStorage.getItem(`lesson${lessonNumber - 1}`)) {
-                alert(`📖 Открываем урок ${lessonNumber}`);
+                alert(`📚 Открываем урок ${lessonNumber}`);
                 localStorage.setItem(`lesson${lessonNumber}`, true);
             } else {
                 alert('❌ Сначала пройдите предыдущий урок!');
             }
         }
+
+        gameContainer.addEventListener("wheel", (e) => {
+            gameContainer.scrollBy({
+                top: e.deltaY * 0.5,
+                behavior: "smooth",
+            });
+        });
     </script>
 </body>
 </html>
