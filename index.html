@@ -10,19 +10,32 @@
             margin: 0;
             overflow: hidden;
             background: linear-gradient(to bottom, #1e3c72, #2a5298);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             font-family: Arial, sans-serif;
         }
 
         .game-container {
             position: relative;
             width: 100vw;
-            height: 200vh;
+            height: 300vh;
             background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/IMG_2164.jpeg') no-repeat center;
             background-size: cover;
+        }
+
+        .character-selection {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .character-selection img {
+            width: 80px;
+            margin: 10px;
+            cursor: pointer;
         }
 
         .mermaid {
@@ -54,6 +67,12 @@
 </head>
 <body>
     <div class="game-container" id="gameContainer">
+        <div class="character-selection" id="characterSelection">
+            <p>Выберите персонажа:</p>
+            <img src="https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/character1.png" onclick="selectCharacter('character1')">
+            <img src="https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/character2.png" onclick="selectCharacter('character2')">
+            <img src="https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/character3.png" onclick="selectCharacter('character3')">
+        </div>
         <div class="mermaid" id="mermaid"></div>
         <div class="lesson lesson-1" onclick="openLesson(1)"></div>
         <div class="lesson lesson-2" onclick="openLesson(2)"></div>
@@ -64,20 +83,22 @@
     <script>
         let gameContainer = document.getElementById('gameContainer');
         let mermaid = document.getElementById('mermaid');
+        let characterSelection = document.getElementById('characterSelection');
 
-        // Перемещение персонажа
-        function moveMermaid(x, y) {
-            mermaid.style.left = `${x}px`;
-            mermaid.style.top = `${y}px`;
+        function selectCharacter(character) {
+            localStorage.setItem('selectedCharacter', character);
+            characterSelection.style.display = 'none';
         }
 
-        // Открытие уроков
         function openLesson(lessonNumber) {
-            alert(`Открываем урок ${lessonNumber}`);
-            // Здесь можно добавить логику проверки доступности урока
+            if (lessonNumber === 1 || localStorage.getItem(`lesson${lessonNumber - 1}`)) {
+                alert(`Открываем урок ${lessonNumber}`);
+                localStorage.setItem(`lesson${lessonNumber}`, true);
+            } else {
+                alert('Сначала пройдите предыдущий урок!');
+            }
         }
 
-        // Скролл карты
         window.addEventListener('wheel', (e) => {
             gameContainer.scrollBy(0, e.deltaY * 0.5);
         });
