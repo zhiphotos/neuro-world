@@ -10,20 +10,21 @@
             margin: 0;
             overflow: hidden;
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            background: #001f3f; /* Временный фон */
         }
 
-        /* Контейнер игры */
+        /* Контейнер карты */
         .game-container {
             position: relative;
             width: 100vw;
-            height: 300vh; /* Длинная карта для скролла */
+            height: 300vh;
             background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/bacground.png') no-repeat center top;
             background-size: cover;
-            overflow-y: auto; /* Включаем вертикальный скролл */
+            overflow-y: auto;
+            border: 3px solid red; /* Временная рамка */
         }
 
-        /* Персонаж */
+        /* Русалка-персонаж */
         .mermaid {
             position: absolute;
             width: 120px;
@@ -31,48 +32,77 @@
             background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/pers.png') no-repeat center;
             background-size: contain;
             left: 50%;
-            bottom: 10%;
+            top: 80%;
             transform: translateX(-50%);
             transition: all 0.3s ease-in-out;
         }
 
-        /* Иконки уроков */
+        /* Уроки */
         .lesson {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             cursor: pointer;
             background-size: contain;
             background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .lesson-1 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/zvuk_1.png'); top: 10%; left: 30%; }
-        .lesson-2 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/video-2.png'); top: 30%; left: 60%; }
-        .lesson-3 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/story-4.png'); top: 50%; left: 20%; }
+        .lesson-1 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/zvuk_1.png'); top: 10%; left: 20%; }
+        .lesson-2 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/video-2.png'); top: 30%; left: 50%; }
+        .lesson-3 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/story-4.png'); top: 50%; left: 30%; }
         .lesson-4 { background-image: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/reels-5.png'); top: 70%; left: 70%; }
+
+        /* Текст на уроках */
+        .lesson-text {
+            position: absolute;
+            width: 100%;
+            bottom: -20px;
+            text-align: center;
+            font-size: 14px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            border-radius: 5px;
+        }
 
         /* Заголовок */
         .title {
-            position: absolute;
+            position: fixed;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             color: white;
             padding: 10px 20px;
             border-radius: 10px;
-            font-size: 24px;
+            font-size: 22px;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
+    <div class="title">🌊 Русалочий Мир — исследуй и учись! 🧜‍♀️</div>
+
     <div class="game-container" id="gameContainer">
-        <div class="title">🌊 Русалочий Мир — исследуй и учись! 🧜‍♀️</div>
+        <!-- Персонаж -->
         <div class="mermaid" id="mermaid"></div>
-        <div class="lesson lesson-1" onclick="openLesson(1)"></div>
-        <div class="lesson lesson-2" onclick="openLesson(2)"></div>
-        <div class="lesson lesson-3" onclick="openLesson(3)"></div>
-        <div class="lesson lesson-4" onclick="openLesson(4)"></div>
+
+        <!-- Уроки -->
+        <div class="lesson lesson-1" onclick="openLesson(1)">
+            <div class="lesson-text">🎵 Звуковой урок</div>
+        </div>
+        <div class="lesson lesson-2" onclick="openLesson(2)">
+            <div class="lesson-text">📺 Видео-урок</div>
+        </div>
+        <div class="lesson lesson-3" onclick="openLesson(3)">
+            <div class="lesson-text">📖 История</div>
+        </div>
+        <div class="lesson lesson-4" onclick="openLesson(4)">
+            <div class="lesson-text">🎬 Ролики</div>
+        </div>
     </div>
 
     <script>
@@ -87,10 +117,15 @@
 
         // Открытие уроков
         function openLesson(lessonNumber) {
-            alert(`📖 Открываем урок ${lessonNumber}`);
+            if (lessonNumber === 1 || localStorage.getItem(`lesson${lessonNumber - 1}`)) {
+                alert(`📖 Открываем урок ${lessonNumber}`);
+                localStorage.setItem(`lesson${lessonNumber}`, true);
+            } else {
+                alert('❌ Сначала пройдите предыдущий урок!');
+            }
         }
 
-        // Улучшенный скроллинг карты
+        // Плавный скроллинг карты
         gameContainer.addEventListener("wheel", (e) => {
             gameContainer.scrollBy({
                 top: e.deltaY * 0.5,
