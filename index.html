@@ -10,29 +10,26 @@
             margin: 0;
             overflow: hidden;
             background: linear-gradient(to bottom, #1e3c72, #2a5298);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             font-family: Arial, sans-serif;
         }
 
         .game-container {
             position: relative;
             width: 100vw;
-            height: 200vh; /* Длинный мир для скроллинга */
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/IMG_2164.jpeg') no-repeat center;
+            height: 200vh;
+            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/IMG_2164.jpeg') no-repeat center;
             background-size: cover;
+            overflow-y: scroll;
         }
 
         .mermaid {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/IMG_2179.png') no-repeat center;
+            width: 120px;
+            height: 120px;
+            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/IMG_2179.png') no-repeat center;
             background-size: contain;
             left: 50%;
-            bottom: 10%;
+            top: 90%;
             transform: translateX(-50%);
             transition: all 0.5s ease-in-out;
         }
@@ -41,7 +38,7 @@
             position: absolute;
             width: 80px;
             height: 80px;
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/photo_2025-01-22%2015.20.28.jpeg') no-repeat center;
+            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/photo_2025-01-22_15.20.28.jpeg') no-repeat center;
             background-size: contain;
             cursor: pointer;
         }
@@ -50,37 +47,45 @@
         .lesson-2 { top: 40%; left: 60%; }
         .lesson-3 { top: 60%; left: 20%; }
         .lesson-4 { top: 80%; left: 70%; }
+
+        .lesson-text {
+            position: absolute;
+            font-size: 14px;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="game-container" id="gameContainer">
         <div class="mermaid" id="mermaid"></div>
         <div class="lesson lesson-1" onclick="openLesson(1)"></div>
+        <div class="lesson-text" style="top: 23%; left: 28%;">Урок 1</div>
         <div class="lesson lesson-2" onclick="openLesson(2)"></div>
+        <div class="lesson-text" style="top: 43%; left: 58%;">Урок 2</div>
         <div class="lesson lesson-3" onclick="openLesson(3)"></div>
+        <div class="lesson-text" style="top: 63%; left: 18%;">Урок 3</div>
         <div class="lesson lesson-4" onclick="openLesson(4)"></div>
+        <div class="lesson-text" style="top: 83%; left: 68%;">Урок 4</div>
     </div>
 
     <script>
         let gameContainer = document.getElementById('gameContainer');
         let mermaid = document.getElementById('mermaid');
 
-        // Перемещение персонажа
-        function moveMermaid(x, y) {
-            mermaid.style.left = `${x}px`;
-            mermaid.style.top = `${y}px`;
-        }
+        // Скроллинг карты
+        gameContainer.addEventListener('wheel', (e) => {
+            gameContainer.scrollBy(0, e.deltaY * 0.5);
+        });
 
         // Открытие уроков
         function openLesson(lessonNumber) {
             alert(`Открываем урок ${lessonNumber}`);
-            // Здесь можно добавить логику проверки доступности урока
+            // Можно добавить переход на YouTube-ссылку или другое действие
         }
-
-        // Скролл карты
-        window.addEventListener('wheel', (e) => {
-            gameContainer.scrollBy(0, e.deltaY * 0.5);
-        });
     </script>
 </body>
 </html>
