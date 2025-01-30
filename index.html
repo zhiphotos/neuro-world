@@ -17,7 +17,7 @@
             position: relative;
             width: 100vw;
             height: 300vh;
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/background.png') no-repeat center top;
+            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/bacground.png') no-repeat center top;
             background-size: cover;
             overflow-y: auto;
         }
@@ -100,11 +100,6 @@
     <script>
         let gameContainer = document.getElementById('gameContainer');
         let mermaid = document.getElementById('mermaid');
-
-        function moveMermaid(x, y) {
-            mermaid.style.left = `${x}px`;
-            mermaid.style.top = `${y}px`;
-        }
 
         function openLesson(lessonNumber) {
             if (lessonNumber === 1 || localStorage.getItem(`lesson${lessonNumber - 1}`)) {
