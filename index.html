@@ -12,93 +12,83 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Фон карты */
+        /* Контейнер карты */
         .game-container {
             position: relative;
             width: 100vw;
             height: 300vh;
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/bacground.png') no-repeat center;
+            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/bacground.png') no-repeat center;
             background-size: cover;
         }
 
-        /* Окно выбора персонажа */
-        .character-selection {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            z-index: 10;
-        }
-
-        .character-selection img {
-            width: 100px;
-            margin: 10px;
-            cursor: pointer;
-        }
-
-        /* Русалка */
+        /* Русалка-персонаж */
         .mermaid {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/pers.png') no-repeat center;
+            background-size: contain;
+            left: 50%;
+            top: 80%;
+            transform: translateX(-50%);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Уроки */
+        .lesson {
             position: absolute;
             width: 120px;
             height: 120px;
-            background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/pers.png') no-repeat center;
-            background-size: contain;
-            left: 50%;
-            bottom: 10%;
-            transform: translateX(-50%);
-            transition: all 0.5s ease-in-out;
-        }
-
-        /* Иконки уроков */
-        .lesson {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background-size: contain;
             cursor: pointer;
         }
 
-        /* Расположение иконок уроков */
-        .lesson-1 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/zvuk_1.png') no-repeat center; top: 20%; left: 30%; }
-        .lesson-2 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/video-2.png') no-repeat center; top: 40%; left: 60%; }
-        .lesson-3 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/story-4.png') no-repeat center; top: 60%; left: 20%; }
-        .lesson-4 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/reels-5.png') no-repeat center; top: 80%; left: 70%; }
+        .lesson-1 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/zvuk_1.png') no-repeat center; top: 10%; left: 20%; }
+        .lesson-2 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/video-2.png') no-repeat center; top: 30%; left: 50%; }
+        .lesson-3 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/story-4.png') no-repeat center; top: 50%; left: 30%; }
+        .lesson-4 { background: url('https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/reels-5.png') no-repeat center; top: 70%; left: 70%; }
+
+        .lesson-text {
+            position: absolute;
+            width: 120px;
+            text-align: center;
+            font-size: 14px;
+            color: white;
+            top: 100%;
+            left: 0;
+        }
     </style>
 </head>
 <body>
     <div class="game-container" id="gameContainer">
-        <!-- Выбор персонажа -->
-        <div class="character-selection" id="characterSelection">
-            <p>Выберите персонажа:</p>
-            <img src="https://raw.githubusercontent.com/zhiphotos/neuro-world/main/assets/assets/pers.png" onclick="selectCharacter('pers')">
-        </div>
-
-        <!-- Русалка-персонаж -->
+        <!-- Персонаж -->
         <div class="mermaid" id="mermaid"></div>
 
         <!-- Уроки -->
-        <div class="lesson lesson-1" onclick="openLesson(1)"></div>
-        <div class="lesson lesson-2" onclick="openLesson(2)"></div>
-        <div class="lesson lesson-3" onclick="openLesson(3)"></div>
-        <div class="lesson lesson-4" onclick="openLesson(4)"></div>
+        <div class="lesson lesson-1" onclick="openLesson(1)">
+            <div class="lesson-text">🎵 Звуковой урок</div>
+        </div>
+        <div class="lesson lesson-2" onclick="openLesson(2)">
+            <div class="lesson-text">📺 Видео-урок</div>
+        </div>
+        <div class="lesson lesson-3" onclick="openLesson(3)">
+            <div class="lesson-text">📖 История</div>
+        </div>
+        <div class="lesson lesson-4" onclick="openLesson(4)">
+            <div class="lesson-text">🎬 Ролики</div>
+        </div>
     </div>
 
     <script>
         let gameContainer = document.getElementById('gameContainer');
         let mermaid = document.getElementById('mermaid');
-        let characterSelection = document.getElementById('characterSelection');
 
-        // Выбор персонажа
-        function selectCharacter(character) {
-            localStorage.setItem('selectedCharacter', character);
-            characterSelection.style.display = 'none';
+        // Движение персонажа по карте
+        function moveMermaid(x, y) {
+            mermaid.style.left = `${x}px`;
+            mermaid.style.top = `${y}px`;
         }
 
-        // Открытие уроков (по порядку)
+        // Открытие уроков
         function openLesson(lessonNumber) {
             if (lessonNumber === 1 || localStorage.getItem(`lesson${lessonNumber - 1}`)) {
                 alert(`Открываем урок ${lessonNumber}`);
@@ -108,7 +98,7 @@
             }
         }
 
-        // Скролл карты
+        // Скроллинг карты (чтобы можно было двигаться по миру)
         window.addEventListener('wheel', (e) => {
             gameContainer.scrollBy(0, e.deltaY * 0.5);
         });
